@@ -220,6 +220,7 @@ func (gp *generalExt) PostKillTask(taskInfo *mesos.TaskInfo) error {
 	if err != nil {
 		logger.Errorf("Failed to clean up network :%v", err)
 	}
+	logger.Println("Suchith: Network name: ",networkName)
 	err = pod.RemoveNetwork(networkName)
 	if err != nil {
 		logger.Errorf("POD_CLEAN_NETWORK_FAIL -- %v", err)
