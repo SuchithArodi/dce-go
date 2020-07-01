@@ -180,6 +180,10 @@ func (gp *generalExt) PostKillTask(taskInfo *mesos.TaskInfo) error {
 	}
 
 	if pod.GetPodStatus() != types.POD_FAILED || config.GetConfig().GetBool(config.CLEAN_FAIL_TASK) {
+		network, _ := config.GetNetwork()
+		logger.Println("Test network name: ", network.Name)
+		logger.Println("Test network name: ", network.Driver)
+		
 		// clean pod volume and container if clean_container_volume_on_kill is true
 		cleanVolumeAndContainer := config.GetConfig().GetBool(config.CLEAN_CONTAINER_VOLUME_ON_MESOS_KILL)
 		if cleanVolumeAndContainer {
@@ -210,8 +214,8 @@ func (gp *generalExt) PostKillTask(taskInfo *mesos.TaskInfo) error {
 		return nil
 	}
 
-	fmt.Println("Test network name: ", network.Name)
-	fmt.Println("Test network name: ", network.Driver)
+	logger.Println("Test network name: ", network.Name)
+	logger.Println("Test network name: ", network.Driver)
 
 	// Get infra container id
 	infraContainerId, err := pod.GetContainerIdByService(pod.ComposeFiles, types.INFRA_CONTAINER)
