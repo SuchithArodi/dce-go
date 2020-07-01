@@ -198,7 +198,8 @@ func (gp *generalExt) PostKillTask(taskInfo *mesos.TaskInfo) error {
 			}
 		}
 	}
-	if network, ok := config.GetNetwork(); ok {
+	network, ok := config.GetNetwork()
+	if ok {
 		if network.PreExist {
 			return nil
 		}
@@ -208,6 +209,9 @@ func (gp *generalExt) PostKillTask(taskInfo *mesos.TaskInfo) error {
 	if config.GetConfig().GetBool(types.RM_INFRA_CONTAINER) {
 		return nil
 	}
+
+	fmt.Println("Test network name: ", network.Name)
+	fmt.Println("Test network name: ", network.Driver)
 
 	// Get infra container id
 	infraContainerId, err := pod.GetContainerIdByService(pod.ComposeFiles, types.INFRA_CONTAINER)
@@ -220,7 +224,7 @@ func (gp *generalExt) PostKillTask(taskInfo *mesos.TaskInfo) error {
 	if err != nil {
 		logger.Errorf("Failed to clean up network :%v", err)
 	}
-	logger.Println("Suchith: Network name: ",networkName)
+
 	err = pod.RemoveNetwork(networkName)
 	if err != nil {
 		logger.Errorf("POD_CLEAN_NETWORK_FAIL -- %v", err)
